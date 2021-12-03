@@ -30,7 +30,17 @@ class DownloadButton extends vjsButton {
   handleClick() {
     let p = this.player();
 
-    window.open(this.options_.downloadURL || p.currentSrc(), 'Download');
+    var playerSrc = this.options_.downloadURL || p.currentSrc();
+    var url = document.createElement('a');
+    if (typeof url.download === 'string') {
+      url.href = playerSrc;
+      url.setAttribute('download', "");
+      document.body.appendChild(url);
+      url.click();
+      document.body.removeChild(url);
+    } else {
+      window.open(playerSrc);
+    }
     p.trigger('downloadvideo');
   }
 
